@@ -10,14 +10,27 @@ import SwiftUI
 struct ContentView: View {
     @StateObject var vm = ViewModel()
     
+    private let adaptativeColumns = [
+        GridItem(.adaptive(minimum: 150))
+    ]
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationView{
+            ScrollView{
+                LazyVGrid(columns: adaptativeColumns, spacing: 10){
+                    ForEach(vm.filteredPokemon){ pokemon in
+                        NavigationLink(destination: PokemonDetailView(pokemon: pokemon)){
+                            PokemonView(pokemon: pokemon)
+                        }
+                    }
+                }
+                .animation(.easeIn(duration: 0.3), value: vm.filteredPokemon.count)
+                .navigationTitle("PokeApp")
+                .navigationBarTitleDisplayMode(.inline)
+            }
+            .searchable(text: $vm.searchText)
         }
-        .padding()
+        .environmentObject(vm)
     }
 }
 

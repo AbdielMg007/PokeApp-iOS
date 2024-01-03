@@ -14,6 +14,7 @@ struct PokemonPage: Codable {
 }
  
 struct Pokemon: Codable, Identifiable, Equatable {
+    //is mutable ignore the warning
     let id = UUID()
     let name: String
     let url: String

@@ -8,11 +8,35 @@
 import SwiftUI
 
 struct PokemonDetailView: View {
+    @EnvironmentObject var vm: ViewModel
+    let pokemon: Pokemon
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            PokemonView(pokemon: pokemon)
+                .frame(height: 200)
+            
+            VStack(spacing: 16) {
+                Text("ID: \(vm.pokemonDetails?.id ?? 0)")
+                    .font(.headline)
+                
+                Text("Weight: \(vm.formaHW(value: vm.pokemonDetails?.weight ?? 0))")
+                    .font(.headline)
+                
+                Text("Height: \(vm.formaHW(value: vm.pokemonDetails?.height ?? 0))")
+                    .font(.headline)
+            }
+            .padding()
+        }
+        .onAppear {
+            vm.getDetails(pokemon: pokemon)
+        }
     }
 }
 
-#Preview {
-    PokemonDetailView()
+struct PokemonDetailView_Previews: PreviewProvider{
+    static var previews: some View{
+        PokemonDetailView(pokemon: Pokemon.samplePokemon)
+            .environmentObject(ViewModel())
+    }
 }
